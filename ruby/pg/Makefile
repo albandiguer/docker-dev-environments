@@ -6,8 +6,13 @@ TAG=$(shell cat version.txt)
 default:build
 
 build:
-	docker buildx build  --platform $(PLATFORMS) -t $(IMAGE_NAME):$(TAG) -t $(IMAGE_NAME):latest .
+	docker buildx build  \
+		--push \
+		--platform $(PLATFORMS) \
+		-t $(IMAGE_NAME):$(TAG) \
+		-t $(IMAGE_NAME):latest \
+		.
 
 publish:
-	docker login -u $(ACCOUNT)
+	# docker login -u $(ACCOUNT)
 	docker push $(IMAGE_NAME):$(TAG)
