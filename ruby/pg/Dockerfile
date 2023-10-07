@@ -17,22 +17,13 @@ RUN <<-EOF
 		libssl-dev \
 		lsb-release \
 		wget \
-		libc6
+		libc6 \
+		postgresql-client-15 \
+		redis-tools
+
 	# Upgrade bundler
 	gem update --system 3.4.20
-	# PG file repository configuration
-	sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" >\
-		/etc/apt/sources.list.d/pgdg.list'
-	# Import the repository signing key
-	wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc |\
-		tee /etc/apt/trusted.gpg.d/pgdg.asc &>/dev/null
-	apt-get update --allow-unauthenticated
-	# Add pg & redis clients
-	apt-get install -qq -y --fix-missing --no-install-recommends \
-		postgresql-client-${PG_MAJOR} \
-		postgresql-client-common \
-		libpq-dev \
-		redis-tools
+
 	apt-get clean
 	rm -rf /var/lib/apt/lists/*
 EOF
